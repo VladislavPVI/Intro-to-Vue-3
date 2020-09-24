@@ -33,6 +33,8 @@ app.component('product-display',{
         '            <a :href="url">Info</a>\n' +
         '          </div>\n' +
         '        </div>\n' +
+        '<review-list v-if="reviews.length" :reviews="reviews"></review-list>' +
+        '<review-form @review-sub = "addRev"></review-form>\n' +
         '      </div>',
     data() {
         return {
@@ -55,21 +57,25 @@ app.component('product-display',{
             variants: [
                 {id: 1, country: 'USA', img:'./assets/images/1.png', quantity:50},
                 {id: 2, country: 'Russia', img: './assets/images/2.png', quantity: 0},
-            ]
+            ],
+            reviews: []
 
 
         }
     },
     methods: {
         addToCart(){
-            this.$emit('add-to-cart')
+            this.$emit('add-to-cart', this.variants[this.selectedimage].id)
         },
         deleteFromCart(){
-            this.cart -= 1
+            this.$emit('delete-from-cart', this.variants[this.selectedimage].id)
         },
         updateImage(index) {
             this.selectedimage = index
             console.log(index)
+        },
+        addRev(review) {
+            this.reviews.push(review)
         }
     },
     computed: {
